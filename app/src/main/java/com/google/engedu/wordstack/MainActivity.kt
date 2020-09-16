@@ -129,6 +129,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onStartGame(view: View?): Boolean {
+        stackedLayout?.clear()
+        (findViewById<View>(R.id.word1) as LinearLayout).removeAllViews()
+        (findViewById<View>(R.id.word2) as LinearLayout).removeAllViews()
         val messageBox = findViewById<View>(R.id.message_box) as TextView
         messageBox.text = "Game started"
         val size = words.size

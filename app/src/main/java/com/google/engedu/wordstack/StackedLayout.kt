@@ -22,24 +22,24 @@ class StackedLayout(context: Context?) : LinearLayout(context) {
     private val tiles: MutableList<View?> = mutableListOf()
 
     fun push(tile: View?) {
-        /**
-         *
-         * YOUR CODE GOES HERE
-         *
-         */
+        if (peek() != null) {
+            removeView(peek())
+        }
+        tiles.add(tile)
+        addView(tile)
     }
 
     fun pop(): View? {
-        /**
-         *
-         * YOUR CODE GOES HERE
-         *
-         */
-        return null
+        val tile = tiles.removeLast()
+        removeView(tile)
+        if (peek() != null) {
+            addView(peek())
+        }
+        return tile
     }
 
     fun peek(): View? {
-        return tiles.last()
+        return tiles.lastOrNull()
     }
 
     fun empty(): Boolean {
@@ -47,10 +47,7 @@ class StackedLayout(context: Context?) : LinearLayout(context) {
     }
 
     fun clear() {
-        /**
-         *
-         * YOUR CODE GOES HERE
-         *
-         */
+        tiles.clear()
+        removeAllViews()
     }
 }
