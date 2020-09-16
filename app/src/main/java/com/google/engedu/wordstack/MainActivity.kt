@@ -16,6 +16,7 @@ package com.google.engedu.wordstack
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.DragEvent
 import android.view.MotionEvent
@@ -58,11 +59,11 @@ class MainActivity : AppCompatActivity() {
         stackedLayout = StackedLayout(this)
         verticalLayout.addView(stackedLayout, 3)
         val word1LinearLayout = findViewById<View>(R.id.word1)
-        word1LinearLayout.setOnTouchListener(TouchListener())
-        //word1LinearLayout.setOnDragListener(new DragListener());
+//        word1LinearLayout.setOnTouchListener(TouchListener())
+        word1LinearLayout.setOnDragListener(dragListener);
         val word2LinearLayout = findViewById<View>(R.id.word2)
-        word2LinearLayout.setOnTouchListener(TouchListener())
-        //word2LinearLayout.setOnDragListener(new DragListener());
+//        word2LinearLayout.setOnTouchListener(TouchListener())
+        word2LinearLayout.setOnDragListener(dragListener);
     }
 
     private inner class TouchListener : OnTouchListener {
@@ -81,47 +82,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class DragListener : OnDragListener {
-        override fun onDrag(v: View, event: DragEvent): Boolean {
-            val action = event.action
-            when (event.action) {
-                DragEvent.ACTION_DRAG_STARTED -> {
-                    v.setBackgroundColor(LIGHT_BLUE)
-                    v.invalidate()
-                    return true
-                }
-                DragEvent.ACTION_DRAG_ENTERED -> {
-                    v.setBackgroundColor(LIGHT_GREEN)
-                    v.invalidate()
-                    return true
-                }
-                DragEvent.ACTION_DRAG_EXITED -> {
-                    v.setBackgroundColor(LIGHT_BLUE)
-                    v.invalidate()
-                    return true
-                }
-                DragEvent.ACTION_DRAG_ENDED -> {
-                    v.setBackgroundColor(Color.WHITE)
-                    v.invalidate()
-                    return true
-                }
-                DragEvent.ACTION_DROP -> {
-                    // Dropped, reassign Tile to the target Layout
-                    val tile = event.localState as LetterTile
-                    tile.moveToViewGroup(v as ViewGroup)
-                    if (stackedLayout!!.empty()) {
-                        val messageBox = findViewById<View>(R.id.message_box) as TextView
-                        messageBox.text = "$word1 $word2"
-                    }
-                    /**
-                     *
-                     * YOUR CODE GOES HERE
-                     *
-                     */
-                    return true
-                }
+    private val dragListener = OnDragListener { v, event ->
+        when (event.action) {
+            DragEvent.ACTION_DRAG_STARTED -> {
+                v.setBackgroundColor(LIGHT_BLUE)
+                v.invalidate()
+                true
             }
-            return false
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                v.setBackgroundColor(LIGHT_GREEN)
+                v.invalidate()
+                true
+            }
+            DragEvent.ACTION_DRAG_EXITED -> {
+                v.setBackgroundColor(LIGHT_BLUE)
+                v.invalidate()
+                true
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                v.setBackgroundColor(Color.WHITE)
+                v.invalidate()
+                true
+            }
+            DragEvent.ACTION_DROP -> {
+                // Dropped, reassign Tile to the target Layout
+                val tile = event.localState as LetterTile
+                tile.moveToViewGroup(v as ViewGroup)
+                if (stackedLayout!!.empty()) {
+                    val messageBox = findViewById<View>(R.id.message_box) as TextView
+                    messageBox.text = "$word1 $word2"
+                }
+                placedTiles.add(tile)
+
+                true
+            }
+            else -> false
         }
     }
 
@@ -136,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         word1 = words[pos1]
         while (pos1 == Random.nextInt(size).also { word2 = words[it] }) {
         }
-        var p1 = 1
+        var p1 = 0
         var p2 = 0
         val list = mutableListOf<Char>()
         while (p1 < WORD_LENGTH && p2 < WORD_LENGTH) {
@@ -149,6 +144,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val scrambledWord = String(list.toCharArray()) + word1!!.substring(p1, WORD_LENGTH) + word2!!.substring(p2, WORD_LENGTH)
+//        Log.d("sb", "onStartGame: $scrambledWord $word1 $word2 ${list.toString()}")
         for (c in scrambledWord.reversed()) {
             val letterTile = LetterTile(this, c)
             stackedLayout?.push(letterTile)

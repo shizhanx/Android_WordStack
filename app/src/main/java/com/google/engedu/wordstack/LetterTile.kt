@@ -14,9 +14,11 @@
  */
 package com.google.engedu.wordstack
 
+import android.content.ClipData
 import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 
@@ -46,11 +48,9 @@ class LetterTile(context: Context?, letter: Char) : AppCompatTextView(context) {
     }
 
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
-        /**
-         *
-         * YOUR CODE GOES HERE
-         *
-         */
+        if(!frozen && motionEvent.action==MotionEvent.ACTION_DOWN){
+            startDragAndDrop(ClipData.newPlainText("", ""), DragShadowBuilder(this), this, 0)
+        }
         return super.onTouchEvent(motionEvent)
     }
 
