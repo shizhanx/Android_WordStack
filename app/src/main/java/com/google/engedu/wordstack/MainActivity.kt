@@ -16,7 +16,7 @@ package com.google.engedu.wordstack
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
@@ -44,10 +44,10 @@ class MainActivity : AppCompatActivity() {
         try {
             val inputStream = assetManager.open("words.txt")
             val `in` = BufferedReader(InputStreamReader(inputStream))
-            var line: String? = null
+            var line: String?
             while (`in`.readLine().also { line = it } != null) {
                 val word = line!!.trim { it <= ' ' }
-                if (word.length == WORD_LENGTH) words.add(word);
+                if (word.length == WORD_LENGTH) words.add(word)
             }
         } catch (e: IOException) {
             val toast = Toast.makeText(this, "Could not load dictionary", Toast.LENGTH_LONG)
@@ -149,7 +149,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val scrambledWord = String(list.toCharArray()) + word1!!.substring(p1, WORD_LENGTH) + word2!!.substring(p2, WORD_LENGTH)
-
+        for (c in scrambledWord.reversed()) {
+            val letterTile = LetterTile(this, c)
+            stackedLayout?.push(letterTile)
+        }
+//        messageBox.text = scrambledWord
         return true
     }
 

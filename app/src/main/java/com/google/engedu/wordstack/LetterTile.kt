@@ -18,7 +18,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
 import android.view.ViewGroup
-import android.support.v7.widget.AppCompatTextView
+import androidx.appcompat.widget.AppCompatTextView
 
 class LetterTile(context: Context?, letter: Char) : AppCompatTextView(context) {
     private var frozen = false
