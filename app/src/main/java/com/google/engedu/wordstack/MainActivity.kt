@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private var stackedLayout: StackedLayout? = null
     private var word1: String? = null
     private var word2: String? = null
+    private val placedTiles = mutableListOf<LetterTile>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -69,15 +70,11 @@ class MainActivity : AppCompatActivity() {
             if (event.action == MotionEvent.ACTION_DOWN && !stackedLayout!!.empty()) {
                 val tile = stackedLayout!!.peek() as LetterTile
                 tile.moveToViewGroup(v as ViewGroup)
+                placedTiles.add(tile)
                 if (stackedLayout!!.empty()) {
                     val messageBox = findViewById<View>(R.id.message_box) as TextView
                     messageBox.text = "$word1 $word2"
                 }
-                /**
-                 *
-                 * YOUR CODE GOES HERE
-                 *
-                 */
                 return true
             }
             return false
@@ -161,11 +158,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onUndo(view: View?): Boolean {
-        /**
-         *
-         * YOUR CODE GOES HERE
-         *
-         */
+        if (placedTiles.size > 0) {
+            placedTiles.removeLast().moveToViewGroup(stackedLayout as ViewGroup)
+        }
         return true
     }
 
