@@ -12,67 +12,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.google.engedu.wordstack
 
-package com.google.engedu.wordstack;
+import android.content.Context
+import android.graphics.Color
+import android.view.MotionEvent
+import android.view.ViewGroup
+import android.support.v7.widget.AppCompatTextView
 
-import android.content.ClipData;
-import android.content.Context;
-import android.graphics.Color;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-public class LetterTile extends TextView {
-
-    public static final int TILE_SIZE = 150;
-    private Character letter;
-    private boolean frozen;
-
-    public LetterTile(Context context, Character letter) {
-        super(context);
-        this.letter = letter;
-        setText(letter.toString());
-        setTextAlignment(TEXT_ALIGNMENT_CENTER);
-        setHeight(TILE_SIZE);
-        setWidth(TILE_SIZE);
-        setTextSize(30);
-        setBackgroundColor(Color.rgb(255, 255, 200));
-    }
-
-    public void moveToViewGroup(ViewGroup targetView) {
-        ViewParent parent = getParent();
-        if (parent instanceof StackedLayout ) {
-            StackedLayout owner = (StackedLayout) parent;
-            owner.pop();
-            targetView.addView(this);
-            freeze();
-            setVisibility(View.VISIBLE);
+class LetterTile(context: Context?, letter: Char) : AppCompatTextView(context) {
+    private var frozen = false
+    fun moveToViewGroup(targetView: ViewGroup) {
+        val parent = parent
+        if (parent is StackedLayout) {
+            parent.pop()
+            targetView.addView(this)
+            freeze()
+            visibility = VISIBLE
         } else {
-            ViewGroup owner = (ViewGroup) parent;
-            owner.removeView(this);
-            ((StackedLayout) targetView).push(this);
-            unfreeze();
+            val owner = parent as ViewGroup
+            owner.removeView(this)
+            (targetView as StackedLayout).push(this)
+            unfreeze()
         }
     }
 
-    public void freeze() {
-        frozen = true;
+    fun freeze() {
+        frozen = true
     }
 
-    public void unfreeze() {
-        frozen = false;
+    private fun unfreeze() {
+        frozen = false
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
+    override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
         /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
-        return super.onTouchEvent(motionEvent);
+         *
+         * YOUR CODE GOES HERE
+         *
+         */
+        return super.onTouchEvent(motionEvent)
+    }
+
+    companion object {
+        const val TILE_SIZE = 150
+    }
+
+    init {
+        text = letter.toString()
+        textAlignment = TEXT_ALIGNMENT_CENTER
+        height = TILE_SIZE
+        width = TILE_SIZE
+        textSize = 30f
+        setBackgroundColor(Color.rgb(255, 255, 200))
     }
 }

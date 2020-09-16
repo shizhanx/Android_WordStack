@@ -12,54 +12,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.google.engedu.wordstack
 
-package com.google.engedu.wordstack;
+import android.content.Context
+import android.view.View
+import android.widget.LinearLayout
 
-import android.content.Context;
-import android.view.View;
-import android.widget.LinearLayout;
+class StackedLayout(context: Context?) : LinearLayout(context) {
+    private val tiles: MutableList<View?> = mutableListOf()
 
-import java.util.Stack;
-
-public class StackedLayout extends LinearLayout {
-
-    private Stack<View> tiles = new Stack();
-
-    public StackedLayout(Context context) {
-        super(context);
-    }
-
-    public void push(View tile) {
+    fun push(tile: View?) {
         /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
+         *
+         * YOUR CODE GOES HERE
+         *
+         */
     }
 
-    public View pop() {
-        View popped = null;
+    fun pop(): View? {
         /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
-        return popped;
+         *
+         * YOUR CODE GOES HERE
+         *
+         */
+        return null
     }
 
-    public View peek() {
-        return tiles.peek();
+    fun peek(): View? {
+        return tiles.last()
     }
 
-    public boolean empty() {
-        return tiles.empty();
+    fun empty(): Boolean {
+        return tiles.isEmpty()
     }
 
-    public void clear() {
+    fun clear() {
         /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
+         *
+         * YOUR CODE GOES HERE
+         *
+         */
     }
 }
